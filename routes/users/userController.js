@@ -38,37 +38,12 @@ module.exports = {
         }
     },
 
-    // login: async (req, res) => {
-    //     let email = req.body.email;
-    //     let userIncomingPw = req.body.password;
-    //     let foundUser = await findUserEmail(email);
-
-    //     console.log('line47')
-    //     console.log(foundUser)
-    //     let comparedPassword = await bcrypt.compare(userIncomingPw, foundUser.password)
-
-    //     if (!comparedPassword) {
-    //         console.log('line 53')
-    //       return res.status(401).send('Please check your email or password')
-    //     } else {
-    //         console.log('login successful')
-    //       req.session.user = foundUser
-    //       console.log(req.session)
-    //       res.json({
-    //         userIncomingPw,
-    //         foundUser: foundUser.password,
-    //         comparedPassword
-    //       })
-    //     }
-    // }
     login: async (req, res) => {
         try {
             console.log(req.body)
             let foundEmail = await User.findOne({ email: req.body.email })
             if (!foundEmail) {
                 throw {status: 404, message: "No user found, please try again or register!"};
-                 // when throw an object/error, code jump to catch immediately
-                 // Notice: throw Error only accept a string: throw new Error('only string accept in this parenthesis, object will not working in here")
             } else {
                 let comparedPassword = await bcrypt.compare(req.body.password, foundEmail.password)
                 if (!comparedPassword) {
@@ -80,9 +55,6 @@ module.exports = {
                     jwtToken: token
                 })
             }
-
-
-            // res.send(foundEmail)
         }
         catch (e) {
             if (e.status === 400) {
