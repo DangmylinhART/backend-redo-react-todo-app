@@ -12,7 +12,7 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const app = express();
 
-mongoose.connect('mongodb://localhost/term-2-todo-object', {
+mongoose.connect('mongodb://localhost/redo-react-todo-app', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true,
