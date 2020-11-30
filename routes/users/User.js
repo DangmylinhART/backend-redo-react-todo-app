@@ -10,6 +10,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         trim: true,
     },
+    // ref "Todo" from Todo Schema
     todos: [{ type: mongoose.Schema.ObjectId, ref: "Todo" }],
 })
 
