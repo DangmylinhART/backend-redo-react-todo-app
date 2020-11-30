@@ -8,8 +8,8 @@ async function jwtChecker(req, res, next) {
         console.log(jwtToken)
         next();
     }
-    catch (e) {
-        console.log(e)
+    catch (error) {
+        console.log(error)
         res.status(500).send("You have no permission to see this! Please sign up")
     }
 }
