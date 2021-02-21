@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+require('dotenv').config();
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users/users');
@@ -12,7 +13,10 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const app = express();
 
+// If run on server use process.env.MONGODB_URI
 mongoose.connect(process.env.MONGODB_URI, {
+// If run LOCALLY use local host
+// mongoose.connect('mongodb://localhost/redo-react-todo-app', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true,
