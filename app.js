@@ -8,15 +8,16 @@ require('dotenv').config();
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users/users');
 const todoRouter = require('./routes/todo/todo');
+const workoutRouter = require('./routes/workout/workout');
 
 const mongoose = require('mongoose')
 const cors = require('cors')
 const app = express();
 
 // If run on server use process.env.MONGODB_URI
-mongoose.connect(process.env.MONGODB_URI, {
+// mongoose.connect(process.env.MONGODB_URI, {
 // If run LOCALLY use local host
-// mongoose.connect('mongodb://localhost/redo-react-todo-app', {
+mongoose.connect('mongodb://localhost/redo-react-todo-app', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true,
@@ -39,6 +40,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api', indexRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/todo', todoRouter);
+app.use('/api/workouts', workoutRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
