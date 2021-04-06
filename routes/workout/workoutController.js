@@ -2,11 +2,10 @@ const mongoose = require('mongoose')
 const Workout = require('./WorkoutSchema')
 const User = require('../users/User')
 
-// test some tetz here
 module.exports = {
     createWorkout: async (req, res) => {
         try {
-            let newWorkout = new Workout({ 
+            let newWorkout = new Workout({
                 name: req.body.name,
                 cal: req.body.cal
             })
@@ -21,60 +20,49 @@ module.exports = {
         }
     },
 
-    // getAllUserWorkouts: async (req, res) => {
+    getAllWorkouts: async (req, res) => {
+        try {
+            let AllUserWorkouts = await User
+                .findById(req.params.id)
+                .populate("Workouts", "Workout")
+                .select("-password -__v") // exclude password and version
+            res.send(AllUserWorkouts)
+            res.json('check req body first')
+        }
+        catch (e) {
+            res.status(500).json({ message: e.message })
+        }
+    },
 
-    //     console.log('line34')
-    //     console.log('query', req.query)
-    //     console.log(req)
+    deleteWorkout: async (req, res) => {
 
-    //     try {
-    //         // let AllUserWorkouts = await User
-    //         //     .findById(req.params.id)
-    //         //     .populate("Workouts", "Workout")
-    //         //     .select("-password -__v") // exclude password and version
-    //         // res.send(AllUserWorkouts)
-    //     }
-    //     catch (e) {
-    //         console.log('line45')
-    //         res.status(500).json({ message: e.message })
-    //     }
-    // },
+        let userId = req.body.userId
+        let workoutId = req.body.workoutId
 
-    // deleteWorkout: async (req, res) => {
+        try {
+            let foundUser = await User.findById(userId)
+            let deleteWorkout = foundUser.workouts.filter(id => id.toString() !== workoutId)
+            foundUser.workouts = deleteWorkout
+            await foundUser.save()
+            await Workout.findByIdAndDelete(workoutId)
+            res.json({ foundUser, deleteWorkout })
+            res.send(workoutId)
+        }
+        catch (e) { res.status(500).json({ message: e.message }) }
+    },
 
-    //     let userId = req.body.userId
-    //     let WorkoutId = req.body.WorkoutId
-    //     try {
-    //         // let foundUser = await User.findById(userId)
-    //         // let foundUserArray = foundUser.Workouts
-    //         // let filteredArray = foundUserArray.filter((id) => {
-    //         //     if (id.toString() !== WorkoutId) { return id }
-    //         // })
+    updateWorkout: async (req, res) => {
+        try {
+            let updateWorkout = await Workout.findByIdAndUpdate(
+                req.params.id,
+                { name: req.body.name },
+                { cal: req.body.cal },
+            )
+            res.send(updateWorkout)
+        }
+        catch (e) {
+            res.status(500).json({ message: e.message })
+        }
 
-    //         // foundUser.Workouts = filteredArray
-
-    //         // await foundUser.save()
-    //         // await Workout.findByIdAndDelete(WorkoutId)
-
-    //         // // return the id of the deleted Workout
-    //         // res.send(WorkoutId)
-
-    //     }
-    //     catch (e) { res.status(500).json({ message: e.message }) }
-    // },
-
-    // updateWorkout: async (req, res) => {
-
-    //     try {
-    //         // let updateWorkout = await Workout.findByIdAndUpdate(
-    //         //     req.body.WorkoutId,
-    //         //     { Workout: req.body.newWorkoutValue },
-    //         //     { new: true })
-    //         // res.send(updateWorkout)
-    //     }
-    //     catch (e) {
-    //         res.status(500).json({ message: e.message })
-    //     }
-
-    // }
+    }
 }

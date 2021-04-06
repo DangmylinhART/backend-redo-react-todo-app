@@ -1,23 +1,25 @@
 var express = require('express');
 var router = express.Router();
 const jwtChecker = require('../utils/jwtChecker')
-const { createWorkout
-    // , getAllUserWorkouts, deleteWorkout, updateWorkout 
+const {
+    createWorkout,
+    getAllWorkouts,
+    deleteWorkout,
+    updateWorkout
 } = require('./WorkoutController')
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
     res.render('index', { title: 'Express' });
 });
-
 // router.post('/create-Workout', jwtChecker, createWorkout)
-router.post('/create-Workout', createWorkout)
+router.post('/create-workout', createWorkout)
 
-// router.get('/get-user-all-Workout/:id', jwtChecker, getAllUserWorkouts)
+router.get('/get-all-workouts/:id', getAllWorkouts)
 
-// router.delete('/delete-Workout', jwtChecker, deleteWorkout)
+router.delete('/delete-Workout', deleteWorkout)
 
-// router.put('/update-Workout', jwtChecker, updateWorkout)
+router.put('/update-Workout/:id', updateWorkout)
 
 
 module.exports = router;
